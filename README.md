@@ -5,6 +5,8 @@ A Spotify playlists downloader and parser. Takes a user and a playlist id and re
 ## Usage
 
 ```javascript
+var playlists = require('playlistsjs');
+
 playlists
     .download({user: "christofer.roth", playlist: "5TX2BIzygS5HPP2ySb2OED"})
     .then(function(tracks) {
