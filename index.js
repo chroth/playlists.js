@@ -1,5 +1,6 @@
 var unirest = require('unirest');
 var Q = require('q');
+var async = require('async');
 
 //private:
 var playlistEmbedUrl = "https://embed.spotify.com/?uri=spotify:user:[user]:playlist:[playlist_id]";
@@ -34,20 +35,23 @@ var _trackObject = function(artistBody, songBody) {
 function Playlists() {}
 
 Playlists.prototype.parse = function(embedBody) {
+  var d = Q.defer();
   var songs = _parseSongs(embedBody);
   var artists = _parseArtists(embedBody);
 
-  if (songs.length % 2 !== 0 || songs.length !== artists.length) {
+  if (songs.length !== artists.length) {
     throw new Error('Failed to parse artists array');
   }
 
-  var tracks = [];
+  async.times(songs.length, 
+    function(i, next) {
+      next(null, _trackObject(artists[i], songs[i]));
+    },
+    function(err, tracks) {
+      d.resolve(tracks);
+    });
 
-  for (var i = 0; i < songs.length; i++) {
-    tracks.push(_trackObject(artists[i], songs[i]));
-  }
-
-  return tracks;
+  return d.promise;
 };
 
 Playlists.prototype.download = function(opts) {
