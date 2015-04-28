@@ -31,6 +31,58 @@ var _trackObject = function(artistBody, songBody) {
   };
 };
 
+var _download = function(playlist) {
+  var d = Q.defer();
+  var user = playlist.user;
+  var playlistId = playlist.playlist;
+  var playlistUrl = playlistEmbedUrl.replace("[user]", user).replace("[playlist_id]", playlistId);
+
+  unirest.get(playlistUrl)
+    .header('User-Agent', 'Mozilla/5.0')
+    .end(function(res) {
+      if (res.ok) {
+        try {
+          var tracks = playlists.parse(res.body);
+          return d.resolve(tracks);
+        } catch(e) {
+          return d.resolve(e);
+        }
+      }
+
+      return d.reject(new Error("Request to Spotify failed"));
+    });
+
+  return d.promise;
+}
+
+function _downloadAll(playlists) {
+  var results = [];
+  var d = Q.defer();
+
+  var que = async.queue(function(playlist, next) {
+    _download(playlist)
+      .then(function(tracks) {
+        results[playlist.index] = tracks;
+        next();
+      })
+      .catch(function(err) {
+        results[playlist.index] = err;
+        next();
+      });
+  }, 5);
+
+  que.drain = function() {
+    d.resolve(results);
+  }
+
+  for (var i=0; i < playlists.length; i++)
+    playlists[i].index = i;
+
+  que.push(playlists);
+
+  return d.promise;
+}
+
 //public:
 function Playlists() {}
 
@@ -55,27 +107,11 @@ Playlists.prototype.parse = function(embedBody) {
 };
 
 Playlists.prototype.download = function(opts) {
-  var d = Q.defer();
-  var user = opts.user;
-  var playlistId = opts.playlist;
-  var playlistUrl = playlistEmbedUrl.replace("[user]", user).replace("[playlist_id]", playlistId);
-
-  unirest.get(playlistUrl)
-    .header('User-Agent', 'Mozilla/5.0')
-    .end(function(res) {
-      if (res.ok) {
-        try {
-          var tracks = playlists.parse(res.body);
-          return d.resolve(tracks);
-        } catch(e) {
-          return d.resolve(e);
-        }
-      }
-
-      return d.reject(new Error("Request to Spotify failed"));
-    });
-
-  return d.promise;
+  if (Array.isArray(opts)) {
+    return _downloadAll(opts);
+  } else {
+    return _download(opts);
+  }
 };
 
 var playlists = (function() {

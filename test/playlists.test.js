@@ -14,6 +14,7 @@ describe("playlists", function() {
   });
 
   describe(".download", function() {
+
     it("should download a playlist and parse it", function(done) {
       playlists
         .download({user: "christofer.roth", playlist: "5TX2BIzygS5HPP2ySb2OED"})
@@ -25,6 +26,42 @@ describe("playlists", function() {
           tracks[9].href.should.eql("6vTZGECwpTLkgAdnfCgXwW");
           tracks[9].artist.should.eql("Neil Young");
           tracks[9].song.should.eql("On The Beach - Remastered");
+          done();
+        })
+        .catch(function(err) {
+          done(err);
+        })
+        .done();
+    });
+
+    it("should download all playlists in array and parse them", function(done) {
+      playlists
+        .download([
+          {user: "christofer.roth", playlist: "5TX2BIzygS5HPP2ySb2OED"},
+          {user: "christofer.roth", playlist: "2Ts7BsCckracyNBTV5AQzX"},
+        ])
+        .then(function(playlists) {
+          playlists.length.should.be.exactly(2);
+
+          var tracks = playlists[0];
+          var tracks2 = playlists[1];
+
+          tracks.length.should.be.exactly(10);
+          tracks[0].href.should.eql("76b8ipYsNb9zPhliPfWqkn");
+          tracks[0].artist.should.eql("Love");
+          tracks[0].song.should.eql("A House Is Not A Motel");
+          tracks[9].href.should.eql("6vTZGECwpTLkgAdnfCgXwW");
+          tracks[9].artist.should.eql("Neil Young");
+          tracks[9].song.should.eql("On The Beach - Remastered");
+
+          tracks2.length.should.be.exactly(8);
+          tracks2[0].href.should.eql("4IcTpvoM4dXXEIRtHFnRlj");
+          tracks2[0].artist.should.eql("Love");
+          tracks2[0].song.should.eql("Maybe The People Would Be The Times Or Between Clark And Hilldale");
+          tracks2[7].href.should.eql("2bbmdWor8U0QVHxLiwo4SP");
+          tracks2[7].artist.should.eql("Blaze Foley");
+          tracks2[7].song.should.eql("Clay Pigeons");
+
           done();
         })
         .catch(function(err) {
