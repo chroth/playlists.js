@@ -41,12 +41,17 @@ var _download = function(playlist) {
     .header('User-Agent', 'Mozilla/5.0')
     .end(function(res) {
       if (res.ok) {
-        try {
-          var tracks = playlists.parse(res.body);
-          return d.resolve(tracks);
-        } catch(e) {
-          return d.resolve(e);
-        }
+        return playlists.parse(res.body)
+          .then(function(tracks) {
+            return d.resolve({
+              id: playlistId,
+              user: user,
+              tracks: tracks
+            });
+          })
+          .catch(function(err) {
+            d.reject(err);
+          });
       }
 
       return d.reject(new Error("Request to Spotify failed"));
@@ -61,8 +66,8 @@ function _downloadAll(playlists) {
 
   var que = async.queue(function(playlist, next) {
     _download(playlist)
-      .then(function(tracks) {
-        results[playlist.index] = tracks;
+      .then(function(data) {
+        results[playlist.index] = data;
         next();
       })
       .catch(function(err) {

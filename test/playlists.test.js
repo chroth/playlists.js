@@ -18,14 +18,16 @@ describe("playlists", function() {
     it("should download a playlist and parse it", function(done) {
       playlists
         .download({user: "christofer.roth", playlist: "5TX2BIzygS5HPP2ySb2OED"})
-        .then(function(tracks) {
-          tracks.length.should.be.exactly(10);
-          tracks[0].href.should.eql("76b8ipYsNb9zPhliPfWqkn");
-          tracks[0].artist.should.eql("Love");
-          tracks[0].song.should.eql("A House Is Not A Motel");
-          tracks[9].href.should.eql("6vTZGECwpTLkgAdnfCgXwW");
-          tracks[9].artist.should.eql("Neil Young");
-          tracks[9].song.should.eql("On The Beach - Remastered");
+        .then(function(playlist) {
+          playlist.id.should.eql("5TX2BIzygS5HPP2ySb2OED")
+          playlist.user.should.eql("christofer.roth")
+          playlist.tracks.length.should.be.exactly(10);
+          playlist.tracks[0].href.should.eql("76b8ipYsNb9zPhliPfWqkn");
+          playlist.tracks[0].artist.should.eql("Love");
+          playlist.tracks[0].song.should.eql("A House Is Not A Motel");
+          playlist.tracks[9].href.should.eql("6vTZGECwpTLkgAdnfCgXwW");
+          playlist.tracks[9].artist.should.eql("Neil Young");
+          playlist.tracks[9].song.should.eql("On The Beach - Remastered");
           done();
         })
         .catch(function(err) {
@@ -43,8 +45,14 @@ describe("playlists", function() {
         .then(function(playlists) {
           playlists.length.should.be.exactly(2);
 
-          var tracks = playlists[0];
-          var tracks2 = playlists[1];
+          playlists[0].id.should.eql("5TX2BIzygS5HPP2ySb2OED")
+          playlists[0].user.should.eql("christofer.roth")
+
+          playlists[1].id.should.eql("2Ts7BsCckracyNBTV5AQzX")
+          playlists[1].user.should.eql("christofer.roth")
+
+          var tracks = playlists[0].tracks;
+          var tracks2 = playlists[1].tracks;
 
           tracks.length.should.be.exactly(10);
           tracks[0].href.should.eql("76b8ipYsNb9zPhliPfWqkn");
