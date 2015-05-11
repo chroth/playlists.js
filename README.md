@@ -15,6 +15,13 @@ playlists
     .download({user: "christofer.roth", playlist: "5TX2BIzygS5HPP2ySb2OED"})
     .then(function(playlist) {
       console.log(playlist);
+      // { id: '5TX2BIzygS5HPP2ySb2OED',
+      //  user: 'christofer.roth',
+      //  tracks: 
+      //   [ { href: '76b8ipYsNb9zPhliPfWqkn',
+      //       song: 'A House Is Not A Motel',
+      //       artist: 'Love' },
+      // ... ] }
     })
     .catch(function(error) {
       console.log(error);
@@ -24,7 +31,7 @@ playlists
 playlists
     .download([{user: "christofer.roth", playlist: "2Ts7BsCckracyNBTV5AQzX"}, {user: "christofer.roth", playlist: "5TX2BIzygS5HPP2ySb2OED"}])
     .then(function(playlists) {
-      console.log(playlists);
+      console.log(playlists); // Array of playlist objects in same order as passed array.
     })
     .catch(function(error) {
       console.log(error);
