@@ -6,7 +6,7 @@ var async = require('async');
 var playlistEmbedUrl = "https://embed.spotify.com/?uri=spotify:user:[user]:playlist:[playlist_id]";
 
 var _parseSongs = function(embedBody) {
-  return embedBody.match(/<li class="track-title[^>]+/ig);
+  return embedBody.match(/<li class="track-title[^>]+>/ig);
 };
 
 var _parseArtists = function(embedBody) {
@@ -14,11 +14,11 @@ var _parseArtists = function(embedBody) {
 };
 
 var _parseSong = function(songBody) {
-  return /class="track-title ([a-z0-9]+)[^"]+" rel="[^ ]+ ([^"]+)"/i.exec(songBody);
+  return /class="track-title ([a-z0-9]+)[^"]+" rel="[^ ]+ (.+)">/i.exec(songBody);
 };
 
 var _parseArtist = function(artistBody) {
-  return /rel="([^"]+)/i.exec(artistBody);
+  return /rel="(.+)" style=/i.exec(artistBody);
 };
 
 var _trackObject = function(artistBody, songBody) {
@@ -96,17 +96,18 @@ Playlists.prototype.parse = function(embedBody) {
   var songs = _parseSongs(embedBody);
   var artists = _parseArtists(embedBody);
 
-  if (songs.length !== artists.length) {
-    throw new Error('Failed to parse artists array');
+  if (!songs || !artists || songs.length !== artists.length) {
+    d.reject(new Error('Failed to parse playlist'));
   }
-
-  async.times(songs.length, 
-    function(i, next) {
-      next(null, _trackObject(artists[i], songs[i]));
-    },
-    function(err, tracks) {
-      d.resolve(tracks);
-    });
+  else {
+    async.times(songs.length, 
+      function(i, next) {
+        next(null, _trackObject(artists[i], songs[i]));
+      },
+      function(err, tracks) {
+        d.resolve(tracks);
+      });
+  }
 
   return d.promise;
 };

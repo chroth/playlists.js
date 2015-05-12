@@ -78,6 +78,16 @@ describe("playlists", function() {
         .done();
     });
 
+    it("should throw error if incorrect playlist id", function(done) {
+      playlists
+        .download({user: "christofer.roth", playlist: "rRrrrrrrrS5HPP2ySb2OED"})
+        .catch(function(err) {
+          err.message.should.eql('Failed to parse playlist');
+          done();
+        })
+        .done();
+    });
+
   });
 
   describe(".parse", function() {
@@ -93,8 +103,8 @@ describe("playlists", function() {
           tracks[1].song.should.eql("Hey! Mr. Sky");
           tracks[2].artist.should.eql("Margo Guryan");
           tracks[2].song.should.eql("Sunday Morning");
-          tracks[3].artist.should.eql("Canned Heat");
-          tracks[3].song.should.eql("Poor Moon - 2005 Digital Remaster");
+          tracks[3].artist.should.eql("\"Canned\" Heat");
+          tracks[3].song.should.eql("\"Poor\" Moon - 2005 Digital Remaster");
           tracks[8].href.should.eql("1vHqkvJuwJf22NH6i0czCH");
           tracks[8].artist.should.eql("Angels Of Light");
           tracks[8].song.should.eql("Untitled Love Song");
