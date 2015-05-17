@@ -6,11 +6,11 @@ var async = require('async');
 var playlistEmbedUrl = "https://embed.spotify.com/?uri=spotify:user:[user]:playlist:[playlist_id]";
 
 var _parseSongs = function(embedBody) {
-  return embedBody.match(/<li class="track-title[^>]+>/ig);
+  return embedBody.match(/<li class="track-title.+">/ig);
 };
 
 var _parseArtists = function(embedBody) {
-  return embedBody.match(/<li class="artist[^>]+/ig);
+  return embedBody.match(/<li class="artist.+">/ig);
 };
 
 var _parseSong = function(songBody) {

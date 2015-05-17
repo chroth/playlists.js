@@ -107,7 +107,7 @@ describe("playlists", function() {
           tracks[3].song.should.eql("\"Poor\" Moon - 2005 Digital Remaster");
           tracks[8].href.should.eql("1vHqkvJuwJf22NH6i0czCH");
           tracks[8].artist.should.eql("Angels Of Light");
-          tracks[8].song.should.eql("Untitled Love Song");
+          tracks[8].song.should.eql("Untitled > Love Song");
           done();
         })
         .catch(function(err) {
