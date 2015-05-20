@@ -57,11 +57,13 @@ var _download = function(playlist) {
               id: playlistId,
               user: user,
               tracks: tracks
-            });
+            })
+            .done();
           })
           .catch(function(err) {
             d.reject(err);
-          });
+          })
+          .done();
       }
 
       return d.reject(new Error("Request to Spotify failed"));
@@ -71,29 +73,18 @@ var _download = function(playlist) {
 }
 
 function _downloadAll(playlists) {
-  var results = [];
   var d = Q.defer();
 
-  var que = async.queue(function(playlist, next) {
+  async.mapLimit(playlists, 5, function(playlist, next) {
     _download(playlist)
-      .then(function(data) {
-        results[playlist.index] = data;
-        next();
-      })
-      .catch(function(err) {
-        results[playlist.index] = err;
-        next();
-      });
-  }, 5);
-
-  que.drain = function() {
+      .then(function(data) { next(null, data); })
+      .catch(next)
+      .done();
+  },
+  function(errs, results) {
+    if (errs) return d.reject(errs);
     d.resolve(results);
-  }
-
-  for (var i=0; i < playlists.length; i++)
-    playlists[i].index = i;
-
-  que.push(playlists);
+  });
 
   return d.promise;
 }
