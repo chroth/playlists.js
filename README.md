@@ -20,7 +20,8 @@ playlists
       //  tracks: 
       //   [ { href: '76b8ipYsNb9zPhliPfWqkn',
       //       song: 'A House Is Not A Motel',
-      //       artist: 'Love' },
+      //       artist: 'Love',
+      //       duration: '211693' },
       // ... ] }
     })
     .catch(function(error) {
