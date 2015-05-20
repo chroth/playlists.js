@@ -112,7 +112,7 @@ describe("playlists", function() {
           tracks[8].artist.should.eql("Angels Of Light");
           tracks[8].song.should.eql("Untitled > Love Song");
           tracks[8].duration.should.eql(294493);
-          tracks[9].artist.should.eql("Angels Of Light");
+          tracks[9].artist.should.eql("");
           tracks[9].song.should.eql("");
           tracks[9].duration.should.eql(294493);
           done();

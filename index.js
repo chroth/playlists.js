@@ -22,7 +22,7 @@ var _parseSong = function(songBody) {
 };
 
 var _parseArtist = function(artistBody) {
-  return /rel="(.+)" style=/i.exec(artistBody);
+  return /rel="(.*)" style=/i.exec(artistBody);
 };
 
 var _parseDuration = function(duration) {
