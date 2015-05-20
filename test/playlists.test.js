@@ -25,9 +25,11 @@ describe("playlists", function() {
           playlist.tracks[0].href.should.eql("76b8ipYsNb9zPhliPfWqkn");
           playlist.tracks[0].artist.should.eql("Love");
           playlist.tracks[0].song.should.eql("A House Is Not A Motel");
+          playlist.tracks[0].duration.should.eql(211693);
           playlist.tracks[9].href.should.eql("6vTZGECwpTLkgAdnfCgXwW");
           playlist.tracks[9].artist.should.eql("Neil Young");
           playlist.tracks[9].song.should.eql("On The Beach - Remastered");
+          playlist.tracks[9].duration.should.eql(419306);
           done();
         })
         .catch(function(err) {
@@ -99,6 +101,7 @@ describe("playlists", function() {
           tracks[0].href.should.eql("76b8ipYsNb9zPhliPfWqkn");
           tracks[0].artist.should.eql("Love");
           tracks[0].song.should.eql("A House Is Not A Motel");
+          tracks[0].duration.should.eql(211693);
           tracks[1].artist.should.eql("Jackie O Motherfucker");
           tracks[1].song.should.eql("Hey! Mr. Sky");
           tracks[2].artist.should.eql("Margo Guryan");
@@ -108,6 +111,7 @@ describe("playlists", function() {
           tracks[8].href.should.eql("1vHqkvJuwJf22NH6i0czCH");
           tracks[8].artist.should.eql("Angels Of Light");
           tracks[8].song.should.eql("Untitled > Love Song");
+          tracks[8].duration.should.eql(294493);
           done();
         })
         .catch(function(err) {
