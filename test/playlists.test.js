@@ -97,7 +97,7 @@ describe("playlists", function() {
       var tracks = playlists
         .parse(fixture["5TX2BIzygS5HPP2ySb2OED.html"])
         .then(function(tracks) {
-          tracks.length.should.be.exactly(9);
+          tracks.length.should.be.exactly(10);
           tracks[0].href.should.eql("76b8ipYsNb9zPhliPfWqkn");
           tracks[0].artist.should.eql("Love");
           tracks[0].song.should.eql("A House Is Not A Motel");
@@ -112,6 +112,9 @@ describe("playlists", function() {
           tracks[8].artist.should.eql("Angels Of Light");
           tracks[8].song.should.eql("Untitled > Love Song");
           tracks[8].duration.should.eql(294493);
+          tracks[9].artist.should.eql("Angels Of Light");
+          tracks[9].song.should.eql("");
+          tracks[9].duration.should.eql(294493);
           done();
         })
         .catch(function(err) {

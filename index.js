@@ -18,7 +18,7 @@ var _parseDurations = function(embedBody) {
 };
 
 var _parseSong = function(songBody) {
-  return /class="track-title ([a-z0-9]+)[^"]+" rel="[^ ]+ (.+)">/i.exec(songBody);
+  return /class="track-title ([a-z0-9]+)[^"]+" rel="[^ ]+(.+)">/i.exec(songBody);
 };
 
 var _parseArtist = function(artistBody) {
@@ -35,7 +35,7 @@ var _trackObject = function(artistBody, songBody, durationString) {
   var duration = _parseDuration(durationString);
   return {
     href: song[1],
-    song: song[2],
+    song: song[2].trim(),
     artist: artist[1],
     duration: duration,
   };
